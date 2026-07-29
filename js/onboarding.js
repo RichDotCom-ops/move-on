@@ -159,3 +159,12 @@ function onbFinish() {
   const firstName = getFirstName();
   toast(firstName ? `Welcome, ${firstName}! Let's begin your journey` : 'Your custom plan is ready', 'star');
 }
+
+function skipOnboarding() {
+  state.hasCompletedOnboarding = true;
+  state.userName = state.userName || '';
+  document.getElementById('onboarding').classList.add('hidden');
+  saveState();
+  go('home');
+  toast('You can set up your profile anytime', 'check');
+}
