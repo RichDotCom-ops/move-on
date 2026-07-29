@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Move On — Not just moving on. Moving up.</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#08080d">
+</head>
+<body>
+
+<div class="phone">
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c5cff"/>
+      <stop offset="100%" stop-color="#4f6df5"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+  <!-- ONBOARDING -->
+  <div class="onboarding" id="onboarding">
+    <div class="onb-slide onb-welcome active" id="onb-welcome">
+      <div class="onb-logo">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M4 13c2-4 4-6 6-6 1.6 0 2.4 1.8 3.4 4.2C14.6 14 15.6 16 17 16c1.6 0 3-2 4-5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 8h4v4" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h1>Move On</h1>
+      <div class="tagline">Not just moving on.<br>Moving up.</div>
+      <div class="desc">Helping you heal, stay focused, and become the best version of yourself — one day at a time.</div>
+      <button class="onb-primary-btn" onclick="onbGoToName()">Get started</button>
+      <button class="onb-secondary-btn" onclick="skipOnboarding()">Skip for now</button>
+    </div>
+
+    <div class="onb-slide" id="onb-name">
+      <div class="onb-top">
+        <div class="onb-back" onclick="onbBackToWelcome()">←</div>
+        <div class="onb-dots">
+          <div class="onb-dot filled"></div>
+          <div class="onb-dot"></div>
+          <div class="onb-dot"></div>
+          <div class="onb-dot"></div>
+          <div class="onb-dot"></div>
+        </div>
+      </div>
+      <div class="onb-qtitle">What's your name?</div>
+      <div class="name-input-wrap">
+        <input type="text" class="name-input" id="nameInput" placeholder="Enter your name..." maxlength="30" autocomplete="off">
+        <button class="onb-primary-btn" id="nameNextBtn" onclick="onbSaveName()" disabled>Continue</button>
+      </div>
+    </div>
+
+    <div class="onb-slide" id="onb-questions">
+      <div class="onb-top">
+        <div class="onb-back" id="onbBackBtn" onclick="onbBack()">←</div>
+        <div class="onb-dots" id="onbDots"></div>
+      </div>
+      <div class="onb-qtitle" id="onbQTitle"></div>
+      <div class="onb-options" id="onbOptions"></div>
+      <button class="onb-primary-btn" id="onbNextBtn" onclick="onbNext()" disabled>Continue</button>
+    </div>
+
+    <div class="onb-slide onb-building" id="onb-building">
+      <div class="onb-spinner"></div>
+      <h2>Building your custom plan</h2>
+      <p id="onbBuildingSub">Setting things up based on your answers...</p>
+      <div class="onb-progress-track"><div class="onb-progress-fill" id="onbProgressFill"></div></div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app">
+
+    <!-- Pull to Refresh Indicator -->
+    <div id="pullIndicator" style="height:0; opacity:0; overflow:hidden; transition: all 0.3s ease; text-align:center; color:var(--text-dim); font-size:12px; padding:0;">
+      ↓ Pull to refresh
+    </div>
+
+    <!-- HOME -->
+    <section class="screen active" id="screen-home">
+      <div class="topbar">
+        <div>
+          <div class="greeting-name" id="homeGreeting">Good morning <svg class="inline-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16"/><path d="M4 18l-1.6-9L8 12l4-7 4 7 5.6-3L20 18"/></svg></div>
+          <div class="greeting-sub">Focus on you, for you.</div>
+        </div>
+        <div class="iconbtn" onclick="toast('You\'re all caught up','bell')"><span class="dot"></span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg></div>
+      </div>
+
+      <div class="card streak-card" onclick="go('nocontact')">
+        <div>
+          <div class="eyebrow">No Contact Streak</div>
+          <div class="streak-days" id="homeStreakNum">0 <span>Days</span></div>
+          <div class="muted" style="margin-top:6px;" id="homeStreakMsg">Your journey starts now.</div>
+        </div>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 80 80">
+            <circle class="ring-track" cx="40" cy="40" r="34" fill="none" stroke-width="8"/>
+            <circle class="ring-fill" id="homeRing" cx="40" cy="40" r="34" fill="none" stroke-width="8" stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="section-label">
+        <h3>Today's Mission</h3>
+        <span class="muted" id="missionCountLabel">0 of 3 completed</span>
+      </div>
+      <div class="card" id="missionCard"></div>
+
+      <!-- Share Streak Card -->
+      <div class="card share-streak-card" id="shareStreakCard" style="display:none; margin-top:14px; cursor:pointer;" onclick="shareStreak()">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="font-size:32px;">🔥</div>
+          <div style="flex:1;">
+            <div style="font-size:14px; font-weight:700;" id="shareStreakTitle">Share your streak</div>
+            <div style="font-size:12px; color:var(--text-dim); margin-top:2px;" id="shareStreakSub">Let the world know you're moving on</div>
+          </div>
+          <div style="color:var(--purple-light); font-size:20px;">›</div>
+        </div>
+      </div>
+
+      <div class="card quote-card" style="margin-top:14px;">
+        <p>"The journey of a thousand miles begins with a single step."</p>
+      </div>
+    </section>
+
+    <!-- NO CONTACT -->
+    <section class="screen" id="screen-nocontact">
+      <div class="topbar">
+        <div class="backbtn" onclick="go('home')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></div>
+        <div class="title">No Contact</div>
+        <div class="iconbtn" onclick="toast('Link copied to share','share')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></div>
+      </div>
+
+      <div class="nc-hero">
+        <div class="lead">You've been<br>No Contact for</div>
+        <div class="big" id="ncBigDays">0 <small>Days</small></div>
+        <div class="sub" id="ncSubTime">0 Hours 0 Minutes</div>
+      </div>
+
+      <div class="card why-list" style="margin-top:20px;">
+        <h3 style="font-size:14.5px; margin-bottom:10px;">Why No Contact?</h3>
+        <div class="mission-row"><div class="check done"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div><div class="mission-text">Protect your peace</div></div>
+        <div class="mission-row"><div class="check done"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div><div class="mission-text">Rebuild your self-respect</div></div>
+        <div class="mission-row"><div class="check done"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div><div class="mission-text">Focus on your future</div></div>
+        <div class="mission-row"><div class="check done"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div><div class="mission-text">Let go to grow</div></div>
+      </div>
+
+      <div class="nc-footer">
+        <p>Every day without them<br>is a day closer to your best life.</p>
+        <div class="heart-btn" onclick="toast('Sending you strength','heart')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.8 1-1a5.5 5.5 0 000-7.8z"/></svg></div>
+      </div>
+    </section>
+
+    <!-- JOURNAL -->
+    <section class="screen" id="screen-journal">
+      <div class="topbar">
+        <div class="backbtn" onclick="go('home')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></div>
+        <div class="title">Journal</div>
+        <div class="iconbtn" onclick="toast('Shared','share')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></div>
+      </div>
+
+      <div class="card">
+        <div class="cal-header">
+          <button class="navsm" onclick="shiftMonth(-1)">‹</button>
+          <div class="monthlabel" id="calMonthLabel"></div>
+          <button class="navsm" onclick="shiftMonth(1)">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+
+      <div class="journal-date" id="journalDateLabel">Today</div>
+      <textarea class="journal-box" id="journalText" placeholder="Write what's on your mind..."></textarea>
+      <div class="mood-row" id="moodRow"></div>
+      <button class="save-btn" onclick="saveJournal()">Save entry</button>
+    </section>
+
+    <!-- URGE HELP -->
+    <section class="screen" id="screen-urge">
+      <div class="topbar">
+        <div class="backbtn" onclick="go('home')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></div>
+        <div class="title">Urge Help</div>
+        <div style="width:34px;"></div>
+      </div>
+
+      <div class="urge-hero">
+        <h2>Having the urge<br>to reach out?</h2>
+        <p>Take a deep breath. You got this.</p>
+      </div>
+
+      <div class="timer-wrap">
+        <div class="timer-ring">
+          <svg viewBox="0 0 220 220">
+            <circle class="t-track" cx="110" cy="110" r="96"/>
+            <circle class="t-fill" id="urgeRing" cx="110" cy="110" r="96" stroke-dasharray="603.2" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-label">
+            <div class="time" id="urgeTime">02:00</div>
+            <div class="cap">Breathe. Relax. Refocus.</div>
+          </div>
+        </div>
+        <button class="timer-btn primary" id="urgeBtn" onclick="toggleUrgeTimer()">Start breathing</button>
+      </div>
+
+      <div class="doelse-title">Do something else</div>
+      <div class="card" style="padding:6px 12px;">
+        <div class="doelse-row" onclick="handleDoElse('Go for a walk')"><div class="emoji"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4.5" r="1.8"/><path d="M11 22l1-6.5-2.5-2 .8-4.5L14 7l2 2.5 3 1M8.5 12.5l-2.5 2M13 15.5l3.5 1.5-1 5"/></svg></div><div class="txt">Go for a walk</div><div class="chev">›</div></div>
+        <div class="doelse-row" onclick="handleDoElse('Listen to music')"><div class="emoji"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div><div class="txt">Listen to music</div><div class="chev">›</div></div>
+        <div class="doelse-row" onclick="go('journal')"><div class="emoji"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></div><div class="txt">Write in journal</div><div class="chev">›</div></div>
+        <div class="doelse-row" onclick="handleDoElse('Workout')"><div class="emoji"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="9" width="3" height="6" rx="1"/><rect x="19.5" y="9" width="3" height="6" rx="1"/><rect x="4.5" y="10.3" width="3" height="3.4" rx="0.6"/><rect x="16.5" y="10.3" width="3" height="3.4" rx="0.6"/><line x1="7.5" y1="12" x2="16.5" y2="12"/></svg></div><div class="txt">Workout</div><div class="chev">›</div></div>
+      </div>
+    </section>
+
+    <!-- PROGRESS -->
+    <section class="screen" id="screen-progress">
+      <div class="topbar">
+        <div style="width:34px;"></div>
+        <div class="title">Progress</div>
+        <div style="width:34px;"></div>
+      </div>
+
+      <div class="eyebrow" style="margin-bottom:8px;">Overview</div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="num" id="pgDays">0</div><div class="lbl">No Contact<br>Days</div></div>
+        <div class="stat-box"><div class="num" id="pgJournals">0</div><div class="lbl">Journals<br>Written</div></div>
+        <div class="stat-box"><div class="num" id="pgMissions">0</div><div class="lbl">Missions<br>Completed</div></div>
+      </div>
+
+      <div class="section-label"><h3>Mood Over Time</h3></div>
+      <div class="card chart-wrap"></div>
+
+      <div class="section-label"><h3>Milestones</h3></div>
+      <div class="card" id="milestoneCard"></div>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section class="screen" id="screen-achievements">
+      <div class="topbar">
+        <div class="backbtn" onclick="go('progress')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></div>
+        <div class="title">Achievements</div>
+        <div style="width:34px;"></div>
+      </div>
+
+      <div class="ach-wrap" id="achWrap">
+        <div class="ach-trophy"><svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8v5a4 4 0 01-8 0V3z"/><path d="M8 4.5H5.5A2.5 2.5 0 008 7M16 4.5h2.5A2.5 2.5 0 0116 7"/><path d="M10.5 12v3.5M13.5 12v3.5"/><path d="M9 20h6M12 15.5v4.5"/></svg></div>
+        <div class="ach-days"><svg width="20" height="20" viewBox="0 0 24 24" fill="#a78bfa" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.27 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg> <b id="achDays">0</b> <span style="font-size:18px; font-weight:700;">Days</span></div>
+        <div class="ach-title" id="achTitle">Begin Your Journey</div>
+        <div class="ach-sub" id="achSub">Start your journey<br>to a better you.</div>
+      </div>
+
+      <button class="share-btn" onclick="shareAchievement()">Share</button>
+      <div class="keepgoing-link" onclick="go('home')">Keep going <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;"><path d="M9 18l6-6-6-6"/></svg></div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="screen" id="screen-profile">
+      <div class="topbar">
+        <div style="width:34px;"></div>
+        <div class="title">Profile</div>
+        <div style="width:34px;"></div>
+      </div>
+
+      <div class="profile-head">
+        <div class="avatar" id="profileAvatar">?</div>
+        <div>
+          <div class="pname" id="profileName">User <svg class="inline-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16"/><path d="M4 18l-1.6-9L8 12l4-7 4 7 5.6-3L20 18"/></svg></div>
+          <div class="pstatus">Starting the journey.</div>
+        </div>
+      </div>
+
+      <div class="section-label"><h3>Your Stats</h3></div>
+      <div class="card">
+        <div class="stat-list-row"><div class="emoji"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="2"/><path d="M16 2.5v4M8 2.5v4M3 10h18"/></svg></div><div class="lbl">No Contact Days</div><div class="val" id="prNcDays">0</div></div>
+        <div class="stat-list-row"><div class="emoji"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2.5H6.5a2 2 0 00-2 2v15a2 2 0 002 2h11a2 2 0 002-2V8z"/><path d="M14 2.5v6h5.5"/><path d="M9 13h6M9 17h6"/></svg></div><div class="lbl">Journals Written</div><div class="val" id="prJournals">0</div></div>
+        <div class="stat-list-row"><div class="emoji"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.1V12a10 10 0 11-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div><div class="lbl">Missions Completed</div><div class="val" id="prMissions">0</div></div>
+        <div class="stat-list-row"><div class="emoji"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8v5a4 4 0 01-8 0V3z"/><path d="M8 4.5H5.5A2.5 2.5 0 008 7M16 4.5h2.5A2.5 2.5 0 0116 7"/><path d="M10.5 12v3.5M13.5 12v3.5"/><path d="M9 20h6M12 15.5v4.5"/></svg></div><div class="lbl">Achievements</div><div class="val" id="prAch">0</div></div>
+      </div>
+
+      <div class="section-label"><h3>Reminders</h3></div>
+      <div class="card">
+        <div class="toggle-row">
+          <div class="lbl">Daily Reminder</div>
+          <div class="switch on" id="swDaily" onclick="toggleSwitch('swDaily')"><div class="knob"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div class="lbl">Urge Help Reminder</div>
+          <div class="switch on" id="swUrge" onclick="toggleSwitch('swUrge')"><div class="knob"></div></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottomnav">
+    <button class="navbtn active" data-tab="home" onclick="go('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      Home
+    </button>
+    <button class="navbtn" data-tab="journal" onclick="go('journal')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M8 10h8M8 14h8M8 18h5"/></svg>
+      Journal
+    </button>
+    <button class="navbtn" onclick="openAddSheet()">
+      <div class="fabcircle">+</div>
+    </button>
+    <button class="navbtn" data-tab="progress" onclick="go('progress')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
+      Progress
+    </button>
+    <button class="navbtn" data-tab="profile" onclick="go('profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+      Profile
+    </button>
+  </nav>
+
+  <!-- QUICK ADD SHEET -->
+  <div class="overlay" id="addOverlay" onclick="if(event.target===this) closeAddSheet()">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-title">What do you want to do?</div>
+      <div class="sheet-opt" onclick="closeAddSheet(); go('journal')"><div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></div><div class="txt">Write a journal entry</div></div>
+      <div class="sheet-opt" onclick="closeAddSheet(); addMissionPrompt()"><div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.1V12a10 10 0 11-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div><div class="txt">Add a daily mission</div></div>
+      <div class="sheet-opt" onclick="closeAddSheet(); go('urge')"><div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.5V6a1.4 1.4 0 012.8 0v5M12.6 11.5V4.8a1.4 1.4 0 012.8 0v6.7M18.2 11.5V7a1.4 1.4 0 012.8 0v7a7 7 0 01-7 7h-1a7 7 0 01-6.5-4.4L4.4 12a1.5 1.5 0 012.6-1.5l1.9 3"/></svg></div><div class="txt">I'm having an urge</div></div>
+      <button class="sheet-cancel" onclick="closeAddSheet()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/screens.js"></script>
+<script src="js/onboarding.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
