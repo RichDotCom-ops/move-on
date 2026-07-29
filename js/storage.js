@@ -12,6 +12,7 @@ function saveState() {
     urgesResisted: state.urgesResisted,
     startDate: startDate ? startDate.toISOString() : new Date().toISOString(),
     hasCompletedOnboarding: state.hasCompletedOnboarding,
+    day7Celebrated: state.day7Celebrated || false,
     lastVisit: new Date().toISOString()
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
@@ -54,9 +55,10 @@ if (savedData && savedData.hasCompletedOnboarding) {
     calViewYear: today.getFullYear(),
     calViewMonth: today.getMonth(),
     selectedDate: new Date(today),
-    reminders: savedData.reminders || { daily: true, urge: true },
+    reminders: savedData.reminders || { daily: true, urge: true, notifications: false },
     urgesResisted: savedData.urgesResisted || 0,
     hasCompletedOnboarding: true,
+    day7Celebrated: savedData.day7Celebrated || false,
   };
 } else {
   startDate = new Date();
@@ -72,9 +74,10 @@ if (savedData && savedData.hasCompletedOnboarding) {
     calViewYear: today.getFullYear(),
     calViewMonth: today.getMonth(),
     selectedDate: new Date(today),
-    reminders: { daily: true, urge: true },
+    reminders: { daily: true, urge: true, notifications: false },
     urgesResisted: 0,
     hasCompletedOnboarding: false,
+    day7Celebrated: false,
   };
 }
 
