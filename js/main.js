@@ -141,6 +141,137 @@ document.getElementById('app').addEventListener('touchend', () => {
   }
 }, { passive: true });
 
+// ============ PUSH NOTIFICATIONS ============
+
+let notificationInterval = null;
+
+function requestNotificationPermission() {
+    if (!('Notification' in window)) {
+        toast('Notifications not supported on this device');
+        return;
+    }
+    
+    if (Notification.permission === 'granted') {
+        scheduleDailyReminder();
+        toast('Notifications already enabled! 🔔', 'bell');
+        addNotificationButton();
+        return;
+    }
+    
+    if (Notification.permission === 'denied') {
+        toast('Notifications blocked. Enable them in your browser settings.');
+        return;
+    }
+    
+    Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            scheduleDailyReminder();
+            toast('Notifications enabled! We\'ll check in daily 💜', 'bell');
+            haptic('success');
+            addNotificationButton();
+        } else {
+            toast('No worries! You can enable them later in Profile');
+        }
+    });
+}
+
+function scheduleDailyReminder() {
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    
+    if (notificationInterval) clearInterval(notificationInterval);
+    
+    const now = new Date();
+    const scheduledTime = new Date();
+    scheduledTime.setHours(9, 0, 0, 0);
+    
+    if (now > scheduledTime) {
+        scheduledTime.setDate(scheduledTime.getDate() + 1);
+    }
+    
+    const timeUntilNotification = scheduledTime - now;
+    
+    setTimeout(() => {
+        showLocalNotification();
+        notificationInterval = setInterval(() => {
+            showLocalNotification();
+        }, 24 * 60 * 60 * 1000);
+    }, timeUntilNotification);
+    
+    state.reminders.notifications = true;
+    saveState();
+}
+
+function showLocalNotification() {
+    if (Notification.permission !== 'granted') return;
+    
+    const messages = [
+        'How are you feeling today? Take a moment to journal 📝',
+        'Your streak is waiting for you. Keep it going! 💪',
+        'Day ' + (typeof noContactDaysNow === 'function' ? noContactDaysNow() : '') + '. You\'re doing amazing! 🌟',
+        'Take a deep breath. You\'ve got this. 💜',
+        'Time to check in. How\'s your No Contact journey?',
+        'Don\'t forget your daily missions! Small wins matter ✨',
+        'A new day, a fresh start. You\'re stronger than yesterday.',
+        'Someone out there is proud of you today. Keep moving forward.',
+    ];
+    
+    const msg = messages[Math.floor(Math.random() * messages.length)];
+    
+    const notification = new Notification('Move On', {
+        body: msg,
+        icon: '/move-on/assets/icons/icon-192.png',
+        badge: '/move-on/assets/icons/icon-192.png',
+        vibrate: [100, 50, 100],
+        tag: 'moveon-daily',
+        renotify: true
+    });
+    
+    notification.onclick = () => {
+        window.focus();
+        notification.close();
+    };
+}
+
+function addNotificationButton() {
+    const profileScreen = document.getElementById('screen-profile');
+    if (!profileScreen || !profileScreen.classList.contains('active')) return;
+    
+    const remindersCard = profileScreen.querySelector('.card:last-of-type');
+    if (!remindersCard) return;
+    
+    const existing = document.getElementById('notificationCard');
+    if (existing) existing.remove();
+    
+    const card = document.createElement('div');
+    card.id = 'notificationCard';
+    card.className = 'card';
+    card.style.marginTop = '14px';
+    
+    const permissionGranted = 'Notification' in window && Notification.permission === 'granted';
+    
+    card.innerHTML = `
+        <div style="display:flex; align-items:center; gap:12px;">
+            <div style="font-size:28px;">🔔</div>
+            <div style="flex:1;">
+                <div style="font-size:14px; font-weight:700;">Daily Reminders</div>
+                <div style="font-size:12px; color:var(--text-dim);">${permissionGranted ? 'Enabled — We\'ll check in daily' : 'Get motivated every day'}</div>
+            </div>
+            <button onclick="requestNotificationPermission()" style="background:${permissionGranted ? 'var(--bg-elev3)' : 'var(--text)'}; border:1px solid var(--border); color:${permissionGranted ? 'var(--text)' : '#000000'}; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:600; cursor:pointer;">
+                ${permissionGranted ? 'On' : 'Enable'}
+            </button>
+        </div>
+    `;
+    
+    remindersCard.after(card);
+}
+
+// Override renderProfile to add notification button
+const originalRenderProfile = typeof renderProfile === 'function' ? renderProfile : function(){};
+renderProfile = function() {
+    originalRenderProfile();
+    setTimeout(addNotificationButton, 100);
+};
+
 // ============ INITIALIZE APP ============
 window.addEventListener('DOMContentLoaded', () => {
   if (state && state.hasCompletedOnboarding) {
@@ -155,4 +286,13 @@ if (typeof renderUrgeTimer === 'function') {
 
 if (typeof renderHome === 'function') {
   renderHome();
+}
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/move-on/service-worker.js')
+            .then(reg => console.log('Service Worker registered'))
+            .catch(err => console.log('Service Worker failed:', err));
+    });
 }
