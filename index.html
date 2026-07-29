@@ -11,7 +11,15 @@
 <meta name="theme-color" content="#000000">
 </head>
 <body>
-
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/move-on/service-worker.js')
+                .then(reg => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker failed:', err));
+        });
+    }
+</script>
 <div class="phone">
 
 <svg width="0" height="0" style="position:absolute">
