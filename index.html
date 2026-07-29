@@ -7,8 +7,8 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="manifest" href="manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#08080d">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#000000">
 </head>
 <body>
 
@@ -17,8 +17,8 @@
 <svg width="0" height="0" style="position:absolute">
   <defs>
     <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#7c5cff"/>
-      <stop offset="100%" stop-color="#4f6df5"/>
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#cccccc"/>
     </linearGradient>
   </defs>
 </svg>
@@ -27,7 +27,9 @@
   <div class="onboarding" id="onboarding">
     <div class="onb-slide onb-welcome active" id="onb-welcome">
       <div class="onb-logo">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><path d="M4 13c2-4 4-6 6-6 1.6 0 2.4 1.8 3.4 4.2C14.6 14 15.6 16 17 16c1.6 0 3-2 4-5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 8h4v4" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+          <path d="M7 17L17 7M17 7H7M17 7V17" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
       <h1>Move On</h1>
       <div class="tagline">Not just moving on.<br>Moving up.</div>
@@ -84,7 +86,7 @@
     <section class="screen active" id="screen-home">
       <div class="topbar">
         <div>
-          <div class="greeting-name" id="homeGreeting">Good morning <svg class="inline-ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16"/><path d="M4 18l-1.6-9L8 12l4-7 4 7 5.6-3L20 18"/></svg></div>
+          <div class="greeting-name" id="homeGreeting">Good morning</div>
           <div class="greeting-sub">Focus on you, for you.</div>
         </div>
         <div class="iconbtn" onclick="toast('You\'re all caught up','bell')"><span class="dot"></span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 00-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg></div>
@@ -118,7 +120,7 @@
             <div style="font-size:14px; font-weight:700;" id="shareStreakTitle">Share your streak</div>
             <div style="font-size:12px; color:var(--text-dim); margin-top:2px;" id="shareStreakSub">Let the world know you're moving on</div>
           </div>
-          <div style="color:var(--purple-light); font-size:20px;">›</div>
+          <div style="color:var(--text); font-size:20px;">›</div>
         </div>
       </div>
 
@@ -245,8 +247,8 @@
       </div>
 
       <div class="ach-wrap" id="achWrap">
-        <div class="ach-trophy"><svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8v5a4 4 0 01-8 0V3z"/><path d="M8 4.5H5.5A2.5 2.5 0 008 7M16 4.5h2.5A2.5 2.5 0 0116 7"/><path d="M10.5 12v3.5M13.5 12v3.5"/><path d="M9 20h6M12 15.5v4.5"/></svg></div>
-        <div class="ach-days"><svg width="20" height="20" viewBox="0 0 24 24" fill="#a78bfa" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.27 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg> <b id="achDays">0</b> <span style="font-size:18px; font-weight:700;">Days</span></div>
+        <div class="ach-trophy"><svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8v5a4 4 0 01-8 0V3z"/><path d="M8 4.5H5.5A2.5 2.5 0 008 7M16 4.5h2.5A2.5 2.5 0 0116 7"/><path d="M10.5 12v3.5M13.5 12v3.5"/><path d="M9 20h6M12 15.5v4.5"/></svg></div>
+        <div class="ach-days"><svg width="20" height="20" viewBox="0 0 24 24" fill="#ffffff" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.27 5.82 21 7 14.14l-5-4.87 6.91-1.01L12 2z"/></svg> <b id="achDays">0</b> <span style="font-size:18px; font-weight:700;">Days</span></div>
         <div class="ach-title" id="achTitle">Begin Your Journey</div>
         <div class="ach-sub" id="achSub">Start your journey<br>to a better you.</div>
       </div>
@@ -266,7 +268,7 @@
       <div class="profile-head">
         <div class="avatar" id="profileAvatar">?</div>
         <div>
-          <div class="pname" id="profileName">User <svg class="inline-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16"/><path d="M4 18l-1.6-9L8 12l4-7 4 7 5.6-3L20 18"/></svg></div>
+          <div class="pname" id="profileName">User</div>
           <div class="pstatus">Starting the journey.</div>
         </div>
       </div>
