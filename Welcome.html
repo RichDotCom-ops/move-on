@@ -53,9 +53,7 @@
     50% { transform: translateY(-10px); }
   }
 
-  .logo svg {
-    stroke: #000000;
-  }
+  .logo svg { stroke: #000000; }
 
   h1 {
     font-size: 48px;
@@ -76,16 +74,101 @@
     font-size: 15px;
     color: #888888;
     line-height: 1.7;
-    margin-bottom: 40px;
+    margin-bottom: 32px;
     padding: 0 10px;
   }
 
-  .features {
+  .password-section {
+    background: #0d0d0d;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 24px 20px;
+    margin-bottom: 24px;
+  }
+
+  .password-label {
+    font-size: 13px;
+    color: #888888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+
+  .password-input {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: #000000;
+    color: #ffffff;
+    font-size: 18px;
+    text-align: center;
+    font-family: inherit;
+    letter-spacing: 4px;
+    outline: none;
+    transition: border-color 0.2s ease;
+    margin-bottom: 12px;
+  }
+
+  .password-input:focus {
+    border-color: #ffffff;
+  }
+
+  .password-input::placeholder {
+    color: #333333;
+    letter-spacing: 1px;
+    font-size: 14px;
+  }
+
+  .access-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    background: #ffffff;
+    color: #000000;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .access-btn:active {
+    transform: scale(0.97);
+    opacity: 0.8;
+  }
+
+  .error-msg {
+    color: #ff4444;
+    font-size: 13px;
+    margin-top: 8px;
+    display: none;
+  }
+
+  .error-msg.show {
+    display: block;
+    animation: shake 0.5s ease;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+  }
+
+  .hint-text {
+    font-size: 11px;
+    color: #444444;
+    margin-top: 16px;
+  }
+
+  .features-preview {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     text-align: left;
+    opacity: 0.5;
   }
 
   .feature-card {
@@ -93,102 +176,28 @@
     border: 1px solid rgba(255,255,255,0.06);
     border-radius: 18px;
     padding: 18px 16px;
-    transition: all 0.3s ease;
   }
 
-  .feature-card:hover {
-    border-color: rgba(255,255,255,0.2);
-    transform: translateY(-2px);
-  }
-
-  .feature-icon {
-    font-size: 28px;
-    margin-bottom: 10px;
-  }
-
-  .feature-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 4px;
-  }
-
-  .feature-sub {
-    font-size: 11px;
-    color: #666666;
-    line-height: 1.4;
-  }
-
-  .cta-button {
-    width: 100%;
-    padding: 18px;
-    border-radius: 18px;
-    border: none;
-    background: #ffffff;
-    color: #000000;
-    font-size: 17px;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: -0.3px;
-    transition: all 0.3s ease;
-    margin-bottom: 12px;
-  }
-
-  .cta-button:hover {
-    transform: scale(1.02);
-    box-shadow: 0 10px 30px rgba(255,255,255,0.2);
-  }
-
-  .cta-button:active {
-    transform: scale(0.97);
-  }
-
-  .secondary-link {
-    display: inline-block;
-    color: #666666;
-    font-size: 14px;
-    font-weight: 600;
-    text-decoration: none;
-    padding: 12px 24px;
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: all 0.2s ease;
-  }
-
-  .secondary-link:hover {
-    color: #ffffff;
-    border-color: rgba(255,255,255,0.3);
-  }
+  .feature-icon { font-size: 28px; margin-bottom: 10px; }
+  .feature-title { font-size: 14px; font-weight: 700; color: #ffffff; margin-bottom: 4px; }
+  .feature-sub { font-size: 11px; color: #666666; line-height: 1.4; }
 
   .social-proof {
-    margin-top: 40px;
-    padding-top: 30px;
+    margin-top: 30px;
+    padding-top: 24px;
     border-top: 1px solid rgba(255,255,255,0.06);
   }
 
   .social-proof p {
     font-size: 13px;
-    color: #555555;
-    margin-bottom: 6px;
+    color: #444444;
+    margin-bottom: 4px;
   }
 
-  .countdown {
-    font-size: 14px;
-    color: #888888;
-    margin-top: 20px;
-    font-weight: 500;
-  }
-
-  .countdown span {
-    color: #ffffff;
-    font-weight: 700;
-  }
-
-  /* Responsive */
   @media (max-width: 360px) {
     h1 { font-size: 38px; }
     .tagline { font-size: 17px; }
-    .features { grid-template-columns: 1fr; }
+    .features-preview { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -207,39 +216,47 @@
   <h1>Move On</h1>
   <p class="tagline">Not just moving on.<br>Moving up.</p>
   <p class="description">
-    Your personal companion for healing, growth, and becoming the best version of yourself. No account needed. 100% private.
+    Your personal companion for healing, growth, and becoming the best version of yourself.
   </p>
 
-  <!-- Features -->
-  <div class="features">
+  <!-- Feature Previews (locked look) -->
+  <div class="features-preview">
     <div class="feature-card">
       <div class="feature-icon">📊</div>
       <div class="feature-title">No Contact Tracker</div>
-      <div class="feature-sub">Watch your streak grow day by day</div>
+      <div class="feature-sub">Watch your streak grow</div>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🧘</div>
       <div class="feature-title">Urge Timer</div>
-      <div class="feature-sub">2-minute breathing when you need it</div>
+      <div class="feature-sub">2-minute breathing</div>
     </div>
     <div class="feature-card">
       <div class="feature-icon">📝</div>
       <div class="feature-title">Private Journal</div>
-      <div class="feature-sub">Track your moods and thoughts</div>
+      <div class="feature-sub">Track moods & thoughts</div>
     </div>
     <div class="feature-card">
       <div class="feature-icon">🏆</div>
       <div class="feature-title">Achievements</div>
-      <div class="feature-sub">Celebrate every milestone</div>
+      <div class="feature-sub">Celebrate milestones</div>
     </div>
   </div>
 
-  <!-- CTA -->
-  <button class="cta-button" onclick="window.location.href='index.html'">
-    Launch App 🚀
-  </button>
-  <br>
-  <a href="index.html" class="secondary-link">Try it now — it's free</a>
+  <!-- Password Gate -->
+  <div class="password-section">
+    <div class="password-label">🔐 Early Access</div>
+    <input 
+      type="password" 
+      class="password-input" 
+      id="accessCode" 
+      placeholder="Enter code" 
+      maxlength="20"
+      autocomplete="off"
+    >
+    <button class="access-btn" onclick="checkAccess()">Access App</button>
+    <p class="error-msg" id="errorMsg">Invalid code. Try again.</p>
+  </div>
 
   <!-- Social Proof -->
   <div class="social-proof">
@@ -248,11 +265,45 @@
     <p>💜 Built for healing</p>
   </div>
 
-  <div class="countdown">
-    App Store launch: <span>Coming Soon</span>
-  </div>
-
 </div>
+
+<script>
+// ============ ACCESS CONTROL ============
+// CHANGE THIS PASSWORD to whatever you want
+const ACCESS_CODE = "moveon2026";
+
+function checkAccess() {
+  const input = document.getElementById('accessCode');
+  const errorMsg = document.getElementById('errorMsg');
+  
+  if (input.value === ACCESS_CODE) {
+    // Correct — save to session and redirect
+    sessionStorage.setItem('moveon_access', 'granted');
+    window.location.href = 'index.html';
+  } else {
+    // Wrong — show error
+    errorMsg.classList.add('show');
+    input.value = '';
+    input.focus();
+    input.style.borderColor = '#ff4444';
+    
+    setTimeout(() => {
+      errorMsg.classList.remove('show');
+      input.style.borderColor = 'rgba(255,255,255,0.1)';
+    }, 2000);
+  }
+}
+
+// Allow Enter key to submit
+document.getElementById('accessCode').addEventListener('keypress', function(e) {
+  if (e.key === 'Enter') {
+    checkAccess();
+  }
+});
+
+// Focus the input on load
+document.getElementById('accessCode').focus();
+</script>
 
 </body>
 </html>
