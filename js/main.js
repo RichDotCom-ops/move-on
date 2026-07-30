@@ -183,9 +183,11 @@ function addNotificationButton() {
 const originalRenderProfile = typeof renderProfile === 'function' ? renderProfile : function(){};
 renderProfile = function() { originalRenderProfile(); setTimeout(addNotificationButton, 100); };
 
-// ============ AI THERAPIST CHAT ============
-if (!state.chatHistory) state.chatHistory = [];
+// ============ REAL AI THERAPIST CHAT (OpenRouter) ============
+const OPENROUTER_API_KEY = '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';
+const AI_MODEL = 'openai/gpt-oss-20b:free';
 
+// Fallback responses if API fails
 const therapistResponses = [
   "I hear you. Can you tell me more about how that makes you feel?",
   "That sounds really difficult. How long have you been feeling this way?",
@@ -201,19 +203,7 @@ const therapistResponses = [
   "You're stronger than you realize. Every day you're choosing to heal.",
 ];
 
-const therapistGreetings = [
-  "Hi{name}. How are you feeling today? I'm here to listen. 💜",
-  "Welcome back{name}. What's on your mind today?",
-  "Hey{name}. Take a deep breath. How can I support you right now?",
-  "Good to see you{name}. How has your day been so far?",
-];
-
-function getTherapistGreeting() {
-  const firstName = getFirstName();
-  const name = firstName ? ` ${firstName}` : '';
-  const greeting = therapistGreetings[Math.floor(Math.random() * therapistGreetings.length)];
-  return greeting.replace('{name}', name);
-}
+if (!state.chatHistory) state.chatHistory = [];
 
 function addChatMessage(text, sender) {
   if (!state.chatHistory) state.chatHistory = [];
@@ -225,10 +215,14 @@ function renderChat() {
   const container = document.getElementById('chatMessages');
   if (!container) return;
   container.innerHTML = '';
+  
   if (!state.chatHistory || state.chatHistory.length === 0) {
-    const greeting = getTherapistGreeting();
+    const firstName = getFirstName();
+    const name = firstName ? ` ${firstName}` : '';
+    const greeting = `Hi${name}! I'm Ava, your AI therapist. I'm here to listen and support you through your healing journey. How are you feeling today? 💜`;
     addChatMessage(greeting, 'therapist');
   }
+  
   state.chatHistory.forEach(msg => {
     const bubble = document.createElement('div');
     if (msg.sender === 'user') {
@@ -242,29 +236,93 @@ function renderChat() {
   container.scrollTop = container.scrollHeight;
 }
 
-function sendMessage() {
+async function sendMessage() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
   if (!text) return;
+  
   haptic('tap');
+  
   addChatMessage(text, 'user');
   input.value = '';
+  input.disabled = true;
   renderChat();
+  
   const container = document.getElementById('chatMessages');
   const typing = document.createElement('div');
   typing.id = 'typingIndicator';
   typing.style.cssText = 'align-self:flex-start; background:#0d0d0d; border:1px solid rgba(255,255,255,0.06); color:#888; padding:12px 16px; border-radius:18px; font-size:13px; font-style:italic; animation:fadein 0.3s ease;';
-  typing.textContent = 'Typing...';
+  typing.textContent = 'Thinking...';
   container.appendChild(typing);
   container.scrollTop = container.scrollHeight;
-  const delay = 800 + Math.random() * 1500;
-  setTimeout(() => {
+  
+  try {
+    const messages = [
+      { 
+        role: 'system', 
+        content: `You are a warm, supportive AI therapist named Ava helping someone heal from a breakup or difficult relationship. 
+Be empathetic, kind, and encouraging.
+Rules:
+- Keep responses short (2-4 sentences)
+- Use the user's name occasionally if you know it
+- Be supportive but honest
+- Suggest journaling, deep breathing, or the urge timer when appropriate
+- Celebrate their No Contact streak
+- Never be judgmental
+- Use emojis sparingly
+- Sound like a real therapist, not a robot
+- If they're struggling, validate their feelings first`
+      }
+    ];
+    
+    const recentHistory = state.chatHistory.slice(-20);
+    recentHistory.forEach(msg => {
+      messages.push({
+        role: msg.sender === 'user' ? 'user' : 'assistant',
+        content: msg.text
+      });
+    });
+    
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'HTTP-Referer': 'https://richdotcom-ops.github.io/move-on/',
+        'X-Title': 'Move On App'
+      },
+      body: JSON.stringify({
+        model: AI_MODEL,
+        messages: messages,
+        max_tokens: 200,
+        temperature: 0.7
+      })
+    });
+    
     const indicator = document.getElementById('typingIndicator');
     if (indicator) indicator.remove();
-    const response = therapistResponses[Math.floor(Math.random() * therapistResponses.length)];
-    addChatMessage(response, 'therapist');
+    
+    if (!response.ok) throw new Error('API error');
+    
+    const data = await response.json();
+    const aiResponse = data.choices[0].message.content;
+    
+    addChatMessage(aiResponse, 'therapist');
     renderChat();
-  }, delay);
+    
+  } catch (error) {
+    console.error('AI Error:', error);
+    
+    const indicator = document.getElementById('typingIndicator');
+    if (indicator) indicator.remove();
+    
+    const fallback = therapistResponses[Math.floor(Math.random() * therapistResponses.length)];
+    addChatMessage(fallback, 'therapist');
+    renderChat();
+  }
+  
+  input.disabled = false;
+  input.focus();
 }
 
 function clearChat() {
