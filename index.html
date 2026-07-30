@@ -11,8 +11,33 @@
 <meta name="theme-color" content="#000000">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
 <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen" style="display:none;position:fixed;inset:0;background:#000;z-index:300;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
+  <div style="width:100%;max-width:360px;text-align:center;">
+    <div style="width:80px;height:80px;border-radius:50%;background:#000;border:2px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#fff"/></svg>
+    </div>
+    <h1 style="font-size:32px;font-weight:900;color:#fff;margin-bottom:6px;">Move On</h1>
+    <p style="color:#888;font-size:14px;margin-bottom:32px;">Sign in to save your progress</p>
+    <input type="text" id="loginName" placeholder="Your name" autocomplete="name" style="width:100%;padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);background:#0d0d0d;color:#fff;font-size:16px;margin-bottom:10px;font-family:inherit;outline:none;">
+    <input type="email" id="loginEmail" placeholder="Email address" autocomplete="email" style="width:100%;padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);background:#0d0d0d;color:#fff;font-size:16px;margin-bottom:10px;font-family:inherit;outline:none;">
+    <input type="password" id="loginPassword" placeholder="Password (6+ characters)" autocomplete="current-password" style="width:100%;padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);background:#0d0d0d;color:#fff;font-size:16px;margin-bottom:16px;font-family:inherit;outline:none;">
+    <button onclick="signUpWithEmail()" style="width:100%;padding:16px;border-radius:14px;border:none;background:#fff;color:#000;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:8px;">Create Account</button>
+    <button onclick="loginWithEmail()" style="width:100%;padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:16px;">Sign In</button>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div><span style="color:#666;font-size:12px;">or</span><div style="flex:1;height:1px;background:rgba(255,255,255,0.1);"></div></div>
+    <button onclick="signInWithGoogle()" style="width:100%;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#fff;font-size:15px;font-weight:600;cursor:pointer;margin-bottom:12px;">🔵 Continue with Google</button>
+    <button onclick="skipLogin()" style="width:100%;padding:12px;border:none;background:transparent;color:#666;font-size:13px;cursor:pointer;margin-top:8px;">Skip for now</button>
+  </div>
+</div>
+
 <div class="phone">
 <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#cccccc"/></linearGradient></defs></svg>
 
@@ -151,6 +176,7 @@
 <div class="toast" id="toast"></div>
 </div>
 
+<script src="js/auth.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/screens.js"></script>
 <script src="js/onboarding.js"></script>
