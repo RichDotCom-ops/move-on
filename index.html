@@ -15,6 +15,7 @@
 <div class="phone">
 <svg width="0" height="0" style="position:absolute"><defs><linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#cccccc"/></linearGradient></defs></svg>
 
+<!-- ONBOARDING -->
 <div class="onboarding" id="onboarding">
 <div class="onb-slide onb-welcome active" id="onb-welcome">
 <div class="onb-logo"><svg width="50" height="50" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#000000"/><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#ffffff"/></svg></div>
@@ -37,6 +38,7 @@
 <div class="onb-slide onb-building" id="onb-building"><div class="onb-spinner"></div><h2>Building your custom plan</h2><p id="onbBuildingSub">Setting things up based on your answers...</p><div class="onb-progress-track"><div class="onb-progress-fill" id="onbProgressFill"></div></div></div>
 </div>
 
+<!-- APP -->
 <div id="app">
 <div id="pullIndicator" style="height:0;opacity:0;overflow:hidden;transition:all 0.3s ease;text-align:center;color:var(--text-dim);font-size:12px;padding:0;">↓ Pull to refresh</div>
 
@@ -48,16 +50,11 @@
 
 <div class="card" id="levelProgressCard" style="display:block;margin-top:14px;"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;"><span style="font-size:24px;">🌱</span><span style="font-size:13px;font-weight:700;flex:1;">Level Progress</span><span style="font-size:12px;color:var(--text-dim);" id="levelProgressText">1 day to Beginner</span></div><div style="background:var(--bg-elev3);border-radius:6px;height:6px;overflow:hidden;"><div id="levelProgressFill" style="background:#fff;height:100%;width:0%;border-radius:6px;transition:width 0.5s ease;"></div></div></div>
 
-</div>
-</div>
-<div style="font-size:14px;font-weight:700;margin-bottom:4px;" id="spinTitle">Daily Self-Care Spin</div>
-<div style="font-size:12px;color:var(--text-dim);" id="spinSub">Tap to get your daily challenge!</div>
-<div id="spinResult" style="display:none;margin-top:12px;padding:12px;background:#111;border-radius:12px;font-size:14px;font-weight:600;"></div>
-</div>
-
 <div class="section-label"><h3>Today's Mission</h3><span class="muted" id="missionCountLabel">0 of 3 completed</span></div>
 <div class="card" id="missionCard"></div>
+
 <div class="card share-streak-card" id="shareStreakCard" style="display:none;margin-top:14px;cursor:pointer;" onclick="shareStreak()"><div style="display:flex;align-items:center;gap:12px;"><div style="font-size:32px;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg></div><div style="flex:1;"><div style="font-size:14px;font-weight:700;" id="shareStreakTitle">Share your streak</div><div style="font-size:12px;color:var(--text-dim);margin-top:2px;" id="shareStreakSub">Let the world know you're moving on</div></div><div style="color:var(--text);font-size:20px;">›</div></div></div>
+
 <div class="card quote-card" style="margin-top:14px;"><p>"The journey of a thousand miles begins with a single step."</p></div>
 </section>
 
@@ -140,6 +137,7 @@
 </section>
 </div>
 
+<!-- BOTTOM NAV -->
 <nav class="bottomnav">
 <button class="navbtn active" data-tab="home" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Home</button>
 <button class="navbtn" data-tab="journal" onclick="go('journal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M8 10h8M8 14h8M8 18h5"/></svg>Journal</button>
@@ -148,6 +146,7 @@
 <button class="navbtn" data-tab="profile" onclick="go('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profile</button>
 </nav>
 
+<!-- QUICK ADD SHEET -->
 <div class="overlay" id="addOverlay" onclick="if(event.target===this)closeAddSheet()"><div class="sheet"><div class="sheet-handle"></div><div class="sheet-title">What do you want to do?</div><div class="sheet-opt" onclick="closeAddSheet();go('journal')"><div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></div><div class="txt">Write a journal entry</div></div><div class="sheet-opt" onclick="closeAddSheet();addMissionPrompt()"><div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.1V12a10 10 0 11-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div><div class="txt">Add a daily mission</div></div><div class="sheet-opt" onclick="closeAddSheet();go('urge')"><div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12.5V6a1.4 1.4 0 012.8 0v5M12.6 11.5V4.8a1.4 1.4 0 012.8 0v6.7M18.2 11.5V7a1.4 1.4 0 012.8 0v7a7 7 0 01-7 7h-1a7 7 0 01-6.5-4.4L4.4 12a1.5 1.5 0 012.6-1.5l1.9 3"/></svg></div><div class="txt">I'm having an urge</div></div><button class="sheet-cancel" onclick="closeAddSheet()">Cancel</button></div></div>
 <div class="toast" id="toast"></div>
 </div>
