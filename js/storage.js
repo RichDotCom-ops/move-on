@@ -13,6 +13,8 @@ function saveState() {
     startDate: startDate ? startDate.toISOString() : new Date().toISOString(),
     hasCompletedOnboarding: state.hasCompletedOnboarding,
     day7Celebrated: state.day7Celebrated || false,
+    rewardsShown: state.rewardsShown || {},
+    lastChallengeDate: state.lastChallengeDate || null,
     lastVisit: new Date().toISOString()
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
@@ -59,6 +61,8 @@ if (savedData && savedData.hasCompletedOnboarding) {
     urgesResisted: savedData.urgesResisted || 0,
     hasCompletedOnboarding: true,
     day7Celebrated: savedData.day7Celebrated || false,
+    rewardsShown: savedData.rewardsShown || {},
+    lastChallengeDate: savedData.lastChallengeDate || null,
   };
 } else {
   startDate = new Date();
@@ -78,6 +82,8 @@ if (savedData && savedData.hasCompletedOnboarding) {
     urgesResisted: 0,
     hasCompletedOnboarding: false,
     day7Celebrated: false,
+    rewardsShown: {},
+    lastChallengeDate: null,
   };
 }
 
