@@ -15,6 +15,10 @@ function saveState() {
     day7Celebrated: state.day7Celebrated || false,
     rewardsShown: state.rewardsShown || {},
     lastChallengeDate: state.lastChallengeDate || null,
+    chatHistory: state.chatHistory || [],
+    streakFreezes: state.streakFreezes || 0,
+    lastSpinDate: state.lastSpinDate || null,
+    freezeEarnedAt: state.freezeEarnedAt || {},
     lastVisit: new Date().toISOString()
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
@@ -23,16 +27,12 @@ function saveState() {
 function loadState() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) {
-    try {
-      return JSON.parse(saved);
-    } catch(e) {
-      return null;
-    }
+    try { return JSON.parse(saved); }
+    catch(e) { return null; }
   }
   return null;
 }
 
-// State initialization
 const today = new Date();
 const savedData = loadState();
 let startDate;
@@ -63,6 +63,10 @@ if (savedData && savedData.hasCompletedOnboarding) {
     day7Celebrated: savedData.day7Celebrated || false,
     rewardsShown: savedData.rewardsShown || {},
     lastChallengeDate: savedData.lastChallengeDate || null,
+    chatHistory: savedData.chatHistory || [],
+    streakFreezes: savedData.streakFreezes || 0,
+    lastSpinDate: savedData.lastSpinDate || null,
+    freezeEarnedAt: savedData.freezeEarnedAt || {},
   };
 } else {
   startDate = new Date();
@@ -84,18 +88,13 @@ if (savedData && savedData.hasCompletedOnboarding) {
     day7Celebrated: false,
     rewardsShown: {},
     lastChallengeDate: null,
+    chatHistory: [],
+    streakFreezes: 0,
+    lastSpinDate: null,
+    freezeEarnedAt: {},
   };
 }
 
-// Auto-save
-setInterval(() => {
-  if (typeof state !== 'undefined') saveState();
-}, 30000);
-
-window.addEventListener('beforeunload', () => {
-  if (typeof state !== 'undefined') saveState();
-});
-
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden && typeof state !== 'undefined') saveState();
-});
+setInterval(() => { if (typeof state !== 'undefined') saveState(); }, 30000);
+window.addEventListener('beforeunload', () => { if (typeof state !== 'undefined') saveState(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden && typeof state !== 'undefined') saveState(); });
