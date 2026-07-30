@@ -65,18 +65,13 @@ document.addEventListener('touchstart', (e) => {
 
 document.addEventListener('touchmove', (e) => {
   if (swipeHandled) return;
-  
   const deltaX = e.touches[0].clientX - touchStartX;
   const deltaY = e.touches[0].clientY - touchStartY;
-  
   if (deltaX > 60 && Math.abs(deltaX) > Math.abs(deltaY) * 2 && touchStartX < 30) {
     swipeHandled = true;
     haptic('light');
-    
     const currentScreen = document.querySelector('.screen.active');
-    if (currentScreen && currentScreen.id !== 'screen-home') {
-      go('home');
-    }
+    if (currentScreen && currentScreen.id !== 'screen-home') go('home');
   }
 }, { passive: true });
 
@@ -94,9 +89,7 @@ document.getElementById('app').addEventListener('touchstart', (e) => {
 
 document.getElementById('app').addEventListener('touchmove', (e) => {
   if (!pulling) return;
-  
   const pullDistance = e.touches[0].clientY - pullStart;
-  
   if (pullDistance > 0 && pullDistance < pullThreshold * 1.5) {
     const indicator = document.getElementById('pullIndicator');
     if (indicator) {
@@ -111,23 +104,19 @@ document.getElementById('app').addEventListener('touchmove', (e) => {
 document.getElementById('app').addEventListener('touchend', () => {
   if (!pulling) return;
   pulling = false;
-  
   const indicator = document.getElementById('pullIndicator');
   if (indicator) {
     const pullDistance = parseInt(indicator.style.height) || 0;
-    
     if (pullDistance >= pullThreshold) {
       indicator.innerHTML = '<div class="loading-spinner" style="margin:10px auto;"></div>';
       indicator.style.height = '50px';
       indicator.style.opacity = '1';
       indicator.textContent = '';
-      
       setTimeout(() => {
         indicator.style.height = '0px';
         indicator.style.opacity = '0';
         haptic('success');
         toast('Refreshed', 'check');
-        
         const currentScreen = document.querySelector('.screen.active');
         if (currentScreen) {
           const screenName = currentScreen.id.replace('screen-', '');
@@ -142,135 +131,156 @@ document.getElementById('app').addEventListener('touchend', () => {
 }, { passive: true });
 
 // ============ PUSH NOTIFICATIONS ============
-
 let notificationInterval = null;
 
 function requestNotificationPermission() {
-    if (!('Notification' in window)) {
-        toast('Notifications not supported on this device');
-        return;
-    }
-    
-    if (Notification.permission === 'granted') {
-        scheduleDailyReminder();
-        toast('Notifications already enabled! 🔔', 'bell');
-        addNotificationButton();
-        return;
-    }
-    
-    if (Notification.permission === 'denied') {
-        toast('Notifications blocked. Enable them in your browser settings.');
-        return;
-    }
-    
-    Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-            scheduleDailyReminder();
-            toast('Notifications enabled! We\'ll check in daily 💜', 'bell');
-            haptic('success');
-            addNotificationButton();
-        } else {
-            toast('No worries! You can enable them later in Profile');
-        }
-    });
+  if (!('Notification' in window)) { toast('Notifications not supported'); return; }
+  if (Notification.permission === 'granted') { scheduleDailyReminder(); toast('Notifications already enabled! 🔔', 'bell'); addNotificationButton(); return; }
+  if (Notification.permission === 'denied') { toast('Notifications blocked.'); return; }
+  Notification.requestPermission().then(permission => {
+    if (permission === 'granted') { scheduleDailyReminder(); toast('Notifications enabled! 💜', 'bell'); haptic('success'); addNotificationButton(); }
+    else { toast('No worries! Enable later in Profile'); }
+  });
 }
 
 function scheduleDailyReminder() {
-    if (!('Notification' in window) || Notification.permission !== 'granted') return;
-    
-    if (notificationInterval) clearInterval(notificationInterval);
-    
-    const now = new Date();
-    const scheduledTime = new Date();
-    scheduledTime.setHours(9, 0, 0, 0);
-    
-    if (now > scheduledTime) {
-        scheduledTime.setDate(scheduledTime.getDate() + 1);
-    }
-    
-    const timeUntilNotification = scheduledTime - now;
-    
-    setTimeout(() => {
-        showLocalNotification();
-        notificationInterval = setInterval(() => {
-            showLocalNotification();
-        }, 24 * 60 * 60 * 1000);
-    }, timeUntilNotification);
-    
-    state.reminders.notifications = true;
-    saveState();
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  if (notificationInterval) clearInterval(notificationInterval);
+  const now = new Date();
+  const scheduledTime = new Date();
+  scheduledTime.setHours(9, 0, 0, 0);
+  if (now > scheduledTime) scheduledTime.setDate(scheduledTime.getDate() + 1);
+  const timeUntilNotification = scheduledTime - now;
+  setTimeout(() => { showLocalNotification(); notificationInterval = setInterval(() => showLocalNotification(), 24 * 60 * 60 * 1000); }, timeUntilNotification);
+  state.reminders.notifications = true;
+  saveState();
 }
 
 function showLocalNotification() {
-    if (Notification.permission !== 'granted') return;
-    
-    const messages = [
-        'How are you feeling today? Take a moment to journal 📝',
-        'Your streak is waiting for you. Keep it going! 💪',
-        'Day ' + (typeof noContactDaysNow === 'function' ? noContactDaysNow() : '') + '. You\'re doing amazing! 🌟',
-        'Take a deep breath. You\'ve got this. 💜',
-        'Time to check in. How\'s your No Contact journey?',
-        'Don\'t forget your daily missions! Small wins matter ✨',
-        'A new day, a fresh start. You\'re stronger than yesterday.',
-        'Someone out there is proud of you today. Keep moving forward.',
-    ];
-    
-    const msg = messages[Math.floor(Math.random() * messages.length)];
-    
-    const notification = new Notification('Move On', {
-        body: msg,
-        icon: '/move-on/assets/icons/icon-192.png',
-        badge: '/move-on/assets/icons/icon-192.png',
-        vibrate: [100, 50, 100],
-        tag: 'moveon-daily',
-        renotify: true
-    });
-    
-    notification.onclick = () => {
-        window.focus();
-        notification.close();
-    };
+  if (Notification.permission !== 'granted') return;
+  const messages = ['How are you feeling today? Take a moment to journal 📝','Your streak is waiting for you. Keep it going! 💪','Take a deep breath. You\'ve got this. 💜','Time to check in. How\'s your No Contact journey?','Don\'t forget your daily missions! Small wins matter ✨'];
+  const msg = messages[Math.floor(Math.random() * messages.length)];
+  const notification = new Notification('Move On', { body: msg, icon: '/move-on/assets/icons/icon-192.png', vibrate: [100, 50, 100], tag: 'moveon-daily', renotify: true });
+  notification.onclick = () => { window.focus(); notification.close(); };
 }
 
 function addNotificationButton() {
-    const profileScreen = document.getElementById('screen-profile');
-    if (!profileScreen || !profileScreen.classList.contains('active')) return;
-    
-    const remindersCard = profileScreen.querySelector('.card:last-of-type');
-    if (!remindersCard) return;
-    
-    const existing = document.getElementById('notificationCard');
-    if (existing) existing.remove();
-    
-    const card = document.createElement('div');
-    card.id = 'notificationCard';
-    card.className = 'card';
-    card.style.marginTop = '14px';
-    
-    const permissionGranted = 'Notification' in window && Notification.permission === 'granted';
-    
-    card.innerHTML = `
-        <div style="display:flex; align-items:center; gap:12px;">
-            <div style="font-size:28px;">🔔</div>
-            <div style="flex:1;">
-                <div style="font-size:14px; font-weight:700;">Daily Reminders</div>
-                <div style="font-size:12px; color:var(--text-dim);">${permissionGranted ? 'Enabled — We\'ll check in daily' : 'Get motivated every day'}</div>
-            </div>
-            <button onclick="requestNotificationPermission()" style="background:${permissionGranted ? 'var(--bg-elev3)' : 'var(--text)'}; border:1px solid var(--border); color:${permissionGranted ? 'var(--text)' : '#000000'}; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:600; cursor:pointer;">
-                ${permissionGranted ? 'On' : 'Enable'}
-            </button>
-        </div>
-    `;
-    
-    remindersCard.after(card);
+  const profileScreen = document.getElementById('screen-profile');
+  if (!profileScreen || !profileScreen.classList.contains('active')) return;
+  const remindersCard = profileScreen.querySelector('.card:last-of-type');
+  if (!remindersCard) return;
+  const existing = document.getElementById('notificationCard');
+  if (existing) existing.remove();
+  const card = document.createElement('div');
+  card.id = 'notificationCard';
+  card.className = 'card';
+  card.style.marginTop = '14px';
+  const permissionGranted = 'Notification' in window && Notification.permission === 'granted';
+  card.innerHTML = `<div style="display:flex; align-items:center; gap:12px;"><div style="font-size:28px;">🔔</div><div style="flex:1;"><div style="font-size:14px; font-weight:700;">Daily Reminders</div><div style="font-size:12px; color:var(--text-dim);">${permissionGranted ? 'Enabled' : 'Get motivated every day'}</div></div><button onclick="requestNotificationPermission()" style="background:${permissionGranted ? 'var(--bg-elev3)' : 'var(--text)'}; border:1px solid var(--border); color:${permissionGranted ? 'var(--text)' : '#000000'}; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:600; cursor:pointer;">${permissionGranted ? 'On' : 'Enable'}</button></div>`;
+  remindersCard.after(card);
 }
 
-// Override renderProfile to add notification button
 const originalRenderProfile = typeof renderProfile === 'function' ? renderProfile : function(){};
-renderProfile = function() {
-    originalRenderProfile();
-    setTimeout(addNotificationButton, 100);
-};
+renderProfile = function() { originalRenderProfile(); setTimeout(addNotificationButton, 100); };
+
+// ============ AI THERAPIST CHAT ============
+if (!state.chatHistory) state.chatHistory = [];
+
+const therapistResponses = [
+  "I hear you. Can you tell me more about how that makes you feel?",
+  "That sounds really difficult. How long have you been feeling this way?",
+  "Thank you for sharing that with me. What do you think triggered this?",
+  "It's completely normal to feel that way. Be gentle with yourself.",
+  "What would you tell a close friend if they were going through this?",
+  "Let's focus on what you can control right now. What's one small thing you can do today?",
+  "Healing isn't linear. Some days are harder than others, and that's okay.",
+  "I'm proud of you for opening up. That takes real courage.",
+  "Have you tried journaling about this? Writing can help clarify feelings.",
+  "Remember how far you've come. Even being here talking about it is progress.",
+  "What's one thing that brought you joy today, no matter how small?",
+  "You're stronger than you realize. Every day you're choosing to heal.",
+];
+
+const therapistGreetings = [
+  "Hi{name}. How are you feeling today? I'm here to listen. 💜",
+  "Welcome back{name}. What's on your mind today?",
+  "Hey{name}. Take a deep breath. How can I support you right now?",
+  "Good to see you{name}. How has your day been so far?",
+];
+
+function getTherapistGreeting() {
+  const firstName = getFirstName();
+  const name = firstName ? ` ${firstName}` : '';
+  const greeting = therapistGreetings[Math.floor(Math.random() * therapistGreetings.length)];
+  return greeting.replace('{name}', name);
+}
+
+function addChatMessage(text, sender) {
+  if (!state.chatHistory) state.chatHistory = [];
+  state.chatHistory.push({ text, sender, time: new Date().toISOString() });
+  saveState();
+}
+
+function renderChat() {
+  const container = document.getElementById('chatMessages');
+  if (!container) return;
+  container.innerHTML = '';
+  if (!state.chatHistory || state.chatHistory.length === 0) {
+    const greeting = getTherapistGreeting();
+    addChatMessage(greeting, 'therapist');
+  }
+  state.chatHistory.forEach(msg => {
+    const bubble = document.createElement('div');
+    if (msg.sender === 'user') {
+      bubble.style.cssText = 'align-self:flex-end; background:#fff; color:#000; padding:12px 16px; border-radius:18px 18px 4px 18px; max-width:80%; font-size:14px; line-height:1.5; animation:fadein 0.3s ease;';
+    } else {
+      bubble.style.cssText = 'align-self:flex-start; background:#0d0d0d; border:1px solid rgba(255,255,255,0.06); color:#fff; padding:12px 16px; border-radius:18px 18px 18px 4px; max-width:80%; font-size:14px; line-height:1.5; animation:fadein 0.3s ease;';
+    }
+    bubble.textContent = msg.text;
+    container.appendChild(bubble);
+  });
+  container.scrollTop = container.scrollHeight;
+}
+
+function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  haptic('tap');
+  addChatMessage(text, 'user');
+  input.value = '';
+  renderChat();
+  const container = document.getElementById('chatMessages');
+  const typing = document.createElement('div');
+  typing.id = 'typingIndicator';
+  typing.style.cssText = 'align-self:flex-start; background:#0d0d0d; border:1px solid rgba(255,255,255,0.06); color:#888; padding:12px 16px; border-radius:18px; font-size:13px; font-style:italic; animation:fadein 0.3s ease;';
+  typing.textContent = 'Typing...';
+  container.appendChild(typing);
+  container.scrollTop = container.scrollHeight;
+  const delay = 800 + Math.random() * 1500;
+  setTimeout(() => {
+    const indicator = document.getElementById('typingIndicator');
+    if (indicator) indicator.remove();
+    const response = therapistResponses[Math.floor(Math.random() * therapistResponses.length)];
+    addChatMessage(response, 'therapist');
+    renderChat();
+  }, delay);
+}
+
+function clearChat() {
+  if (confirm('Clear chat history?')) {
+    state.chatHistory = [];
+    saveState();
+    renderChat();
+    haptic('medium');
+  }
+}
+
+document.addEventListener('keypress', function(e) {
+  if (e.key === 'Enter' && document.getElementById('screen-therapist')?.classList.contains('active')) {
+    sendMessage();
+  }
+});
 
 // ============ INITIALIZE APP ============
 window.addEventListener('DOMContentLoaded', () => {
@@ -280,19 +290,13 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-if (typeof renderUrgeTimer === 'function') {
-  renderUrgeTimer();
-}
+if (typeof renderUrgeTimer === 'function') renderUrgeTimer();
+if (typeof renderHome === 'function') renderHome();
 
-if (typeof renderHome === 'function') {
-  renderHome();
-}
-
-// Register service worker
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/move-on/service-worker.js')
-            .then(reg => console.log('Service Worker registered'))
-            .catch(err => console.log('Service Worker failed:', err));
-    });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/move-on/service-worker.js')
+      .then(reg => console.log('Service Worker registered'))
+      .catch(err => console.log('Service Worker failed:', err));
+  });
 }
