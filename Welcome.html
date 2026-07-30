@@ -1,1 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Move On — Coming Soon</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
+  body {
+    background: #000000;
+    color: #ffffff;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    animation: fadeUp 1s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 26px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px;
+    box-shadow: 0 20px 60px rgba(255,255,255,0.15);
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .logo svg {
+    stroke: #000000;
+  }
+
+  h1 {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    margin-bottom: 8px;
+  }
+
+  .tagline {
+    font-size: 20px;
+    font-weight: 700;
+    color: #cccccc;
+    margin-bottom: 24px;
+    letter-spacing: -0.3px;
+  }
+
+  .description {
+    font-size: 15px;
+    color: #888888;
+    line-height: 1.7;
+    margin-bottom: 40px;
+    padding: 0 10px;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 40px;
+    text-align: left;
+  }
+
+  .feature-card {
+    background: #0d0d0d;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 18px;
+    padding: 18px 16px;
+    transition: all 0.3s ease;
+  }
+
+  .feature-card:hover {
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+  }
+
+  .feature-icon {
+    font-size: 28px;
+    margin-bottom: 10px;
+  }
+
+  .feature-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+  }
+
+  .feature-sub {
+    font-size: 11px;
+    color: #666666;
+    line-height: 1.4;
+  }
+
+  .cta-button {
+    width: 100%;
+    padding: 18px;
+    border-radius: 18px;
+    border: none;
+    background: #ffffff;
+    color: #000000;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: -0.3px;
+    transition: all 0.3s ease;
+    margin-bottom: 12px;
+  }
+
+  .cta-button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 30px rgba(255,255,255,0.2);
+  }
+
+  .cta-button:active {
+    transform: scale(0.97);
+  }
+
+  .secondary-link {
+    display: inline-block;
+    color: #666666;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: all 0.2s ease;
+  }
+
+  .secondary-link:hover {
+    color: #ffffff;
+    border-color: rgba(255,255,255,0.3);
+  }
+
+  .social-proof {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .social-proof p {
+    font-size: 13px;
+    color: #555555;
+    margin-bottom: 6px;
+  }
+
+  .countdown {
+    font-size: 14px;
+    color: #888888;
+    margin-top: 20px;
+    font-weight: 500;
+  }
+
+  .countdown span {
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  /* Responsive */
+  @media (max-width: 360px) {
+    h1 { font-size: 38px; }
+    .tagline { font-size: 17px; }
+    .features { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Logo -->
+  <div class="logo">
+    <svg width="44" height="44" viewBox="0 0 24 24" fill="none">
+      <path d="M7 17L17 7M17 7H7M17 7V17" stroke="#000000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+  <!-- Headline -->
+  <h1>Move On</h1>
+  <p class="tagline">Not just moving on.<br>Moving up.</p>
+  <p class="description">
+    Your personal companion for healing, growth, and becoming the best version of yourself. No account needed. 100% private.
+  </p>
+
+  <!-- Features -->
+  <div class="features">
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">No Contact Tracker</div>
+      <div class="feature-sub">Watch your streak grow day by day</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🧘</div>
+      <div class="feature-title">Urge Timer</div>
+      <div class="feature-sub">2-minute breathing when you need it</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📝</div>
+      <div class="feature-title">Private Journal</div>
+      <div class="feature-sub">Track your moods and thoughts</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <div class="feature-title">Achievements</div>
+      <div class="feature-sub">Celebrate every milestone</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <button class="cta-button" onclick="window.location.href='index.html'">
+    Launch App 🚀
+  </button>
+  <br>
+  <a href="index.html" class="secondary-link">Try it now — it's free</a>
+
+  <!-- Social Proof -->
+  <div class="social-proof">
+    <p>🔒 No data collected. No account needed.</p>
+    <p>📱 Works on iPhone & Android</p>
+    <p>💜 Built for healing</p>
+  </div>
+
+  <div class="countdown">
+    App Store launch: <span>Coming Soon</span>
+  </div>
+
+</div>
+
+</body>
+</html>
