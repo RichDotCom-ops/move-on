@@ -11,15 +11,7 @@
 <meta name="theme-color" content="#000000">
 </head>
 <body>
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/move-on/service-worker.js')
-                .then(reg => console.log('Service Worker registered'))
-                .catch(err => console.log('Service Worker failed:', err));
-        });
-    }
-</script>
+
 <div class="phone">
 
 <svg width="0" height="0" style="position:absolute">
@@ -111,6 +103,18 @@
             <circle class="ring-track" cx="40" cy="40" r="34" fill="none" stroke-width="8"/>
             <circle class="ring-fill" id="homeRing" cx="40" cy="40" r="34" fill="none" stroke-width="8" stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
           </svg>
+        </div>
+      </div>
+
+      <!-- Level Progress Card -->
+      <div class="card" id="levelProgressCard" style="display:block; margin-top:14px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <span id="levelEmoji" style="font-size:24px;">🌱</span>
+          <span style="font-size:13px; font-weight:700; flex:1;">Level Progress</span>
+          <span style="font-size:12px; color:var(--text-dim);" id="levelProgressText">1 day to Beginner</span>
+        </div>
+        <div style="background:var(--bg-elev3); border-radius:6px; height:6px; overflow:hidden;">
+          <div id="levelProgressFill" style="background:#fff; height:100%; width:0%; border-radius:6px; transition: width 0.5s ease;"></div>
         </div>
       </div>
 
