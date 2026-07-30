@@ -9,7 +9,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#000000">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'><circle cx='12' cy='12' r='12' fill='%23000000'/><path d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z' fill='%23ffffff'/></svg>">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
 </head>
 <body>
 <div class="phone">
@@ -146,7 +147,6 @@
 <button class="navbtn" data-tab="profile" onclick="go('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Profile</button>
 </nav>
 
-<!-- QUICK ADD SHEET -->
 <div class="overlay" id="addOverlay" onclick="if(event.target===this)closeAddSheet()"><div class="sheet"><div class="sheet-handle"></div><div class="sheet-title">What do you want to do?</div><div class="sheet-opt" onclick="closeAddSheet();go('journal')"><div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.83 2.83 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></div><div class="txt">Write a journal entry</div></div><div class="sheet-opt" onclick="closeAddSheet();addMissionPrompt()"><div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.1V12a10 10 0 11-5.9-9.1"/><path d="M22 4L12 14.01l-3-3"/></svg></div><div class="txt">Add a daily mission</div></div><div class="sheet-opt" onclick="closeAddSheet();go('urge')"><div class="ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12.5V6a1.4 1.4 0 012.8 0v5M12.6 11.5V4.8a1.4 1.4 0 012.8 0v6.7M18.2 11.5V7a1.4 1.4 0 012.8 0v7a7 7 0 01-7 7h-1a7 7 0 01-6.5-4.4L4.4 12a1.5 1.5 0 012.6-1.5l1.9 3"/></svg></div><div class="txt">I'm having an urge</div></div><button class="sheet-cancel" onclick="closeAddSheet()">Cancel</button></div></div>
 <div class="toast" id="toast"></div>
 </div>
@@ -155,5 +155,13 @@
 <script src="js/screens.js"></script>
 <script src="js/onboarding.js"></script>
 <script src="js/main.js"></script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/move-on/service-worker.js');
+  });
+}
+</script>
 </body>
 </html>
